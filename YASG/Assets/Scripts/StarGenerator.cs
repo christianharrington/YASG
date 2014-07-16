@@ -9,9 +9,12 @@ public class StarGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
-		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-15, -10), new Vector2 (30, 20), 4f);
+		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
 		foreach (Vector2 p in starPositions) {
-			Instantiate (Star, new Vector3 (p.x, 0, p.y), Quaternion.identity);
+			GameObject s = Instantiate (Star, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
+			float r = UnityEngine.Random.Range(0.01f, 0.1f);
+			Vector3 scale = new Vector3(r, r, r);
+			s.transform.localScale += scale;
 		}
 	}
 
