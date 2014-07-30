@@ -4,6 +4,7 @@ using System;
 
 public class StarGenerator : MonoBehaviour {
 
+	public GameState GameState;
 	public GameObject Star;
 
 	// Use this for initialization
@@ -12,12 +13,13 @@ public class StarGenerator : MonoBehaviour {
 		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
 		foreach (Vector2 p in starPositions) {
 			GameObject s = Instantiate (Star, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
+			s.GetComponent<Star>().GameState = GameState;
 			float r = UnityEngine.Random.Range(0.01f, 0.1f);
 			Vector3 scale = new Vector3(r, r, r);
 			s.transform.localScale += scale;
 		}
 	}
-
+	
 	public static class UniformPoissonDiskSampler
 	{
 		public const int DefaultPointsPerIteration = 30;

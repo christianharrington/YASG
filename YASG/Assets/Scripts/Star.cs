@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Star : MonoBehaviour {
+	public GameState GameState { get; set; }
 
 	// Use this for initialization
 	void Start () {
@@ -13,7 +14,16 @@ public class Star : MonoBehaviour {
 	
 	}
 
-	void OnMouseDown () {
+	public void Select () {
 		renderer.material.color = Color.red;
+	}
+
+	public void DeSelect () {
+		renderer.material.color = Color.yellow;
+	}
+
+
+	void OnMouseDown () {
+		GameState.SetStar(this);
 	}
 }
