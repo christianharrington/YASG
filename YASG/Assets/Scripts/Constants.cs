@@ -14,6 +14,11 @@ public class Constants {
 		{ StarType.K, 0.121 },
 		{ StarType.M, 0.7645 }
 	};
-
 	#endregion
+}
+
+public struct StellarObjectData {
+	public Double MaxRadius
+	public Double MinRadius
+	public Double Density
 }
