@@ -9,6 +9,7 @@ public class Star : IStellarObject {
 	TimeSpan age;
 	List<IResource> resources;
 	HashSet<ILocation> orbits;
+	Random rnd;
 
 	// IStellarObject
 	public TimeSpan Age { 
@@ -37,19 +38,24 @@ public class Star : IStellarObject {
 	}
 
 	public Star(int seed) {
-		Type = RandomType (seed);
-
+		rnd = new Random (seed);
+		Type = RandomType ();
+		Volume = (4 / 3) * (Math.PI * (Math.Pow (RandomRadius (Type), 3)));
 	}
 
-	public static StarType RandomType(int seed) {
-		Random rnd = new Random (seed);
-		Double rngVal = rnd.NextDouble ();
+	public StarType RandomType() {
+		Double rndVal = rnd.NextDouble ();
 		StarType type = StarType.M;
-		while (rngVal > 0) {
-			rngVal -= Constants.StarTypeLikelyhood[type];
+		while (rndVal > 0) {
+			rndVal -= Constants.StarTypeLikelyhood[type];
 			type++;
 		}
 		return type;
+	}
+
+	public Double RandomRadius(StarType type) {
+		StellarObjectData data = Constants.StarData [type];
+		return rnd.NextDouble (data.MinRadius*100, data.MaxRadius*100);
 	}
 
 	// ILocation

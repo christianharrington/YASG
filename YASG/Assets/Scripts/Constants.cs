@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class Constants {
 	#region Star Data
+	// FIXME: This is not accurate enough as it does not take giants and dwarfs into account.
+	// Units are Solar Masses and Solar Radii
 	// From http://en.wikipedia.org/wiki/Stellar_classification	
 	public static Dictionary<StarType, Double> StarTypeLikelyhood = new Dictionary<StarType, Double>() 
 	{
@@ -17,13 +19,13 @@ public class Constants {
 
 	public static Dictionary<StarType, StellarObjectData> StarData = new Dictionary<StarType, StellarObjectData> ()
 	{
-		{ StarType.O, new StellarObjectData(6.6, 100, 1, 1) },
-		{ StarType.B, new StellarObjectData(1.8, 6.6, 1, 1) },
-		{ StarType.A, new StellarObjectData(1.4, 1.8, 1, 1) },
-		{ StarType.F, new StellarObjectData(1.15, 1.4, 1, 1) },
-		{ StarType.G, new StellarObjectData(0.96, 1.15, 1, 1) },
-		{ StarType.K, new StellarObjectData(0.7, 0.96, 1, 1) },
-		{ StarType.M, new StellarObjectData(0, 0.7, 1, 1) } 
+		{ StarType.O, new StellarObjectData(6.6, 100, 16, 100) },
+		{ StarType.B, new StellarObjectData(1.8, 6.6, 2.1, 16) },
+		{ StarType.A, new StellarObjectData(1.4, 1.8, 1.4, 2.1) },
+		{ StarType.F, new StellarObjectData(1.15, 1.4, 1.04, 1.4) },
+		{ StarType.G, new StellarObjectData(0.96, 1.15, 0.8, 1.04) },
+		{ StarType.K, new StellarObjectData(0.7, 0.96, 0.45, 0.8) },
+		{ StarType.M, new StellarObjectData(0.15, 0.7, 0.08, 0.45) } 
 	};
 	#endregion
 
