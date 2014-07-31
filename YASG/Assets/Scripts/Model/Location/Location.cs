@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
 
 public interface ILocation {
-	ILocation getParent();
+	ILocation Parent { get; set; }
+	HashSet<ILocation> Sublocations { get; set; }
 }

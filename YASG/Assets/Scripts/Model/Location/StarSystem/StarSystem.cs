@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class StarSystem : MonoBehaviour {
+public class StarSystem : MonoBehaviour, ILocation {
 	public GameState GameState { get; set; }
+
+	public ILocation Parent { get; set; }
+	public HashSet<ILocation> Sublocations { get; set; }
+
+
 
 	// Use this for initialization
 	void Start () {

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 
-public class Ship : MonoBehaviour, ITurnable {
+public class Ship : MonoBehaviour, ITurnable, IVehicle {
 	public GameState GameState;
 	public StarSystem Destination;
+	public ILocation Parent { get; set; }
+	public HashSet<ILocation> Sublocations { get; set; }
 
 	public float Speed = 1.0f;
 

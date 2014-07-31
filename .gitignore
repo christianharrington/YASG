@@ -12,3 +12,5 @@
 *.pidb
 *.booproj
 Temp
+
+.DS_Store
