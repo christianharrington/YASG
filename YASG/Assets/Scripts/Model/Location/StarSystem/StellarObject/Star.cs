@@ -18,7 +18,8 @@ public class Star : IStellarObject {
 		}
 	}
 	public StarType Type { get; set; }
-	public int Mass { get; set; }
+	public Double Mass { get; set; }
+	public Double Radius { get; set; }
 	public List<IResource> Resources { 
 		get {
 			return resources;
@@ -30,22 +31,27 @@ public class Star : IStellarObject {
 			return orbits;
 		}
 	}
-	public int Volume { get; set; }
+	public Double Volume { get; set; }
 
 	public void Turn (TimeSpan turnTime, DateTime targetDate)
 	{
 		age += turnTime;
+		//(Math.Log((age.TotalDays / ExpectedAge (Mass)))-0.1) * 10
 	}
 
 	public Star(int seed) {
 		rnd = new Random (seed);
 		Type = RandomType ();
-		Volume = (4 / 3) * (Math.PI * (Math.Pow (RandomRadius (Type), 3)));
+		Mass = RandomMass (Type);
+		Radius = RandomRadius (Type);
+		Volume = Convert.ToInt32((4 / 3) * (Math.PI * Math.Pow (Radius, 3)));
+		resources = new List<IResource> (); // FIXME: Consider star resources.
+		age = TimeSpan.FromDays (rnd.Next (ExpectedAge (Mass)));
 	}
 
 	public StarType RandomType() {
 		Double rndVal = rnd.NextDouble ();
-		StarType type = StarType.M;
+		StarType type = 0;
 		while (rndVal > 0) {
 			rndVal -= Constants.StarTypeLikelyhood[type];
 			type++;
@@ -53,12 +59,25 @@ public class Star : IStellarObject {
 		return type;
 	}
 
-	public Double RandomRadius(StarType type) {
+	public int RandomMass(StarType type) {
 		StellarObjectData data = Constants.StarData [type];
-		return rnd.NextDouble (data.MinRadius*100, data.MaxRadius*100);
+		return Convert.ToInt32(rnd.NextDouble() * (data.MaxMass - data.MinMass) + data.MinMass);
+	}
+
+	public int RandomRadius(StarType type) {
+		StellarObjectData data = Constants.StarData [type];
+		return Convert.ToInt32(rnd.NextDouble() * (data.MaxRadius - data.MinRadius) + data.MinRadius);
+	}
+
+	// FIXME: We should find a more accurate method.
+	// http://www.asc-csa.gc.ca/eng/educators/resources/astronomy/module2/calculator.asp
+	// Age in 10 millions of years = 1 / (mass^2.5) 
+	public int ExpectedAge(Double mass) {
+		return Convert.ToInt32(1 / (Math.Pow (mass, 2.5))) * 10000000 * 365;
 	}
 
 	// ILocation
 	public ILocation Location { get; set; }
 
 }
+
