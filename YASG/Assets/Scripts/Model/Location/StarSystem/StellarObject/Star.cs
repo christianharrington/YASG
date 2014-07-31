@@ -59,6 +59,6 @@ public class Star : IStellarObject {
 	}
 
 	// ILocation
-	public ILocation Parent { get; set; }
+	public ILocation Location { get; set; }
 
 }

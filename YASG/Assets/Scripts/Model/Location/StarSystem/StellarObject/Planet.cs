@@ -12,8 +12,9 @@ public class Planet : IStellarObject {
 	private HashSet<ILocation> orbits;
 	private TimeSpan age;
 	private List<IResource> resources;
-	private int mass;
-	private int volume;
+	private double mass;
+	private double volume;
+	private double radius;
 	private PlanetType planetType;
 
 	public Planet(int seed, IStellarObject location) {
@@ -43,11 +44,11 @@ public class Planet : IStellarObject {
 		this.planetType = pType;
 
 		// Mass
-		mass = Convert.ToInt32(random.NextDouble() * (Constants.PlanetData[planetType].MaxMass - Constants.PlanetData[planetType].MinMass) + Constants.PlanetData[planetType].MinMass);
+		mass = random.NextDouble() * (Constants.PlanetData[planetType].MaxMass - Constants.PlanetData[planetType].MinMass) + Constants.PlanetData[planetType].MinMass;
 
-		// Volume
-		double radius = random.NextDouble() * (Constants.PlanetData[planetType].MaxRadius - Constants.PlanetData[planetType].MinRadius) + Constants.PlanetData[planetType].MinRadius;
-		volume = Convert.ToInt32(4/3 * Math.PI * Math.Pow(radius, 3));
+		// Volume & radius
+		radius = random.NextDouble() * (Constants.PlanetData[planetType].MaxRadius - Constants.PlanetData[planetType].MinRadius) + Constants.PlanetData[planetType].MinRadius;
+		volume = 4/3 * Math.PI * Math.Pow(radius, 3);
 
 		// Locations
 		sublocations = new HashSet<ILocation>();
@@ -90,7 +91,7 @@ public class Planet : IStellarObject {
 		}
 	}
 
-	public int Mass {
+	public double Mass {
 		get {
 			throw new System.NotImplementedException ();
 		}
@@ -99,7 +100,7 @@ public class Planet : IStellarObject {
 		}
 	}
 
-	public int Volume {
+	public double Volume {
 		get {
 			throw new System.NotImplementedException ();
 		}
@@ -108,7 +109,16 @@ public class Planet : IStellarObject {
 		}
 	}
 
-	public ILocation Parent {
+	public double Radius {
+		get {
+			throw new System.NotImplementedException ();
+		}
+		set {
+			throw new System.NotImplementedException ();
+		}
+	}
+
+	public ILocation Location {
 		get {
 			throw new System.NotImplementedException ();
 		}

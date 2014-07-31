@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 	public GameState GameState;
 
-	public List<Ship> Ships = new List<Ship>();
+	public List<IVehicle> Vehicle = new List<IVehicle>();
 
 	public int Credits;
 

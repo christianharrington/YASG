@@ -25,10 +25,10 @@ public class GUIController : MonoBehaviour {
 
 		if(GUI.Button(new Rect(20, 75, 80, 20), "New ship")) {
 			GameObject newShip = Instantiate (Ship, new Vector3 (0f, 0f, 0f), Quaternion.identity) as GameObject;
-			Ship ship = newShip.GetComponent<Ship>();
+			VehicleBehaviour ship = newShip.GetComponent<VehicleBehaviour>();
 			ship.GameState = GameState;
-			GameState.Turnables.Add(ship);
-			GameState.Player.Ships.Add(ship);
+			GameState.Turnables.Add(ship.Vehicle);
+			GameState.Player.Vehicle.Add(ship.Vehicle);
 		}
 	}
 }

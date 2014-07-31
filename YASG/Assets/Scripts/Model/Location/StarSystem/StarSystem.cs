@@ -1,38 +1,22 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-public class StarSystem : MonoBehaviour, ILocation, ITurnable {
-	public GameState GameState { get; set; }
-
-	public ILocation Parent { get; set; }
-	public HashSet<ILocation> Sublocations { get; set; }
-
-
-
-	// Use this for initialization
-	void Start () {
+public class StarSystem : ILocation, ITurnable {
+	private ILocation location;
+	private HashSet<ILocation> sublocations;
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	public void Turn (System.TimeSpan turnTime, System.DateTime targetDate) {
 		return;
 	}
 
-	public void Select () {
-		renderer.material.color = Color.red;
+	public ILocation Location {
+		get {
+			return location;
+		}
 	}
 
-	public void DeSelect () {
-		renderer.material.color = Color.yellow;
-	}
-
-
-	void OnMouseDown () {
-		GameState.SetStar(this);
+	public HashSet<ILocation> Sublocations {
+		get {
+			return sublocations;
+		}
 	}
 }

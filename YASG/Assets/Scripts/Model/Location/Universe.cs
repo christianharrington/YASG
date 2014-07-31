@@ -1,15 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
 
-public class Universe : MonoBehaviour {
+public class Universe : ILocation {
+	private HashSet<ILocation> sublocations = new HashSet<ILocation>();
 
-	// Use this for initialization
-	void Start () {
-	
+	public ILocation Location {
+		get {
+			return null;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public HashSet<ILocation> Sublocations {
+		get {
+			return sublocations;
+		}
 	}
 }

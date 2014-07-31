@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public interface IVehicle : ILocation {
+﻿public interface IVehicle : ILocation, ITurnable {
+	ILocation Destination { get; set; }
 
 }

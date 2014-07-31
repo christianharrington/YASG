@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum Unit {
+﻿public enum Unit {
 	Gram, Meter, MeterSquared, MeterCubed
 }
 
