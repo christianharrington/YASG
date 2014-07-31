@@ -13,7 +13,10 @@ public class UniverseGenerator : MonoBehaviour {
 		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
 		foreach (Vector2 p in starPositions) {
 			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
+
 			s.GetComponent<StarSystem>().GameState = GameState;
+			GameState.Turnables.Add(s.GetComponent<StarSystem>());
+
 			float r = UnityEngine.Random.Range(0.01f, 0.1f);
 			Vector3 scale = new Vector3(r, r, r);
 			s.transform.localScale += scale;
