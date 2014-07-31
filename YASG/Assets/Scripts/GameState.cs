@@ -4,7 +4,7 @@ using System;
 
 public class GameState : MonoBehaviour
 {
-	public List<ITurnable> Turnables = new List<ITurnable>();
+	public HashSet<ITurnable> Turnables = new HashSet<ITurnable>();
 
 	public const int TurnTime = 60;
 
@@ -33,7 +33,9 @@ public class GameState : MonoBehaviour
 		if (date < targetDate) {
 			date = date + turnTime;
 
-			Turnables.ForEach(t => t.Turn (turnTime, targetDate));
+			foreach (ITurnable t in Turnables) {
+				t.Turn (turnTime, targetDate);
+			}
 		} 
 	}
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class StarSystem : MonoBehaviour, ILocation {
+public class StarSystem : MonoBehaviour, ILocation, ITurnable {
 	public GameState GameState { get; set; }
 
 	public ILocation Parent { get; set; }
@@ -17,6 +17,10 @@ public class StarSystem : MonoBehaviour, ILocation {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void Turn (System.TimeSpan turnTime, System.DateTime targetDate) {
+		return;
 	}
 
 	public void Select () {
