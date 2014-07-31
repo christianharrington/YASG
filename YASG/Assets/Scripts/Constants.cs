@@ -39,7 +39,7 @@ public class Constants {
 		{ PlanetType.SuperJupiter, 0.028829 }
 	};
 
-	public static Dictionary<StarType, StellarObjectData> PlanetData = new Dictionary<PlanetType, StellarObjectData> ()
+	public static Dictionary<PlanetType, StellarObjectData> PlanetData = new Dictionary<PlanetType, StellarObjectData> ()
 	{
 		{ PlanetType.EarthLike, new StellarObjectData(0.3, 1.25, 0.06, 1.25) },
 		{ PlanetType.SuperEarth, new StellarObjectData(1.25, 2, 1.00, 1.5) },
