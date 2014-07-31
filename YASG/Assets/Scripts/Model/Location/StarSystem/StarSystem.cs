@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Star : MonoBehaviour {
+public class StarSystem : MonoBehaviour {
 	public GameState GameState { get; set; }
 
 	// Use this for initialization

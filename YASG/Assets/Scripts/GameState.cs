@@ -10,8 +10,8 @@ public class GameState : MonoBehaviour
 
 	public Player Player;
 
-	private Star selectedStar;
-	private Ship selectedShip;
+	private StarSystem selectedStarSystem;
+	private Ship selectedVehicle;
 
 	private DateTime date = new DateTime(2008, 6, 1, 7, 47, 0);
 	private DateTime targetDate;
@@ -44,25 +44,25 @@ public class GameState : MonoBehaviour
 		Debug.Log("Each update will cover a time span of " + turnTime);
 	}
 
-	public void SetStar(Star star) {
-		if (selectedStar != null) {
-			selectedStar.DeSelect();
+	public void SetStar(StarSystem star) {
+		if (selectedStarSystem != null) {
+			selectedStarSystem.DeSelect();
 		}
 
 		star.Select();
-	    selectedStar = star;
+	    selectedStarSystem = star;
 
-		if (selectedShip != null) {
-			selectedShip.Destination = selectedStar;
+		if (selectedVehicle != null) {
+			selectedVehicle.Destination = selectedStarSystem;
 		}
 	}
 
 	public void SetShip(Ship ship) {
-		if (selectedShip != null) {
-			selectedShip.DeSelect();
+		if (selectedVehicle != null) {
+			selectedVehicle.DeSelect();
 		}
 
 		ship.Select();
-		selectedShip = ship;
+		selectedVehicle = ship;
 	}
 }

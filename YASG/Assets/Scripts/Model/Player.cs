@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
 	public int Credits;
 
-	public Star Location;
+	public StarSystem Location;
 	
 
 	// Use this for initialization

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System;
 
-public class StarGenerator : MonoBehaviour {
+public class UniverseGenerator : MonoBehaviour {
 
 	public GameState GameState;
-	public GameObject Star;
+	public GameObject StarSystem;
 
 	// Use this for initialization
 	void Start () {
 		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
 		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
 		foreach (Vector2 p in starPositions) {
-			GameObject s = Instantiate (Star, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
-			s.GetComponent<Star>().GameState = GameState;
+			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
+			s.GetComponent<StarSystem>().GameState = GameState;
 			float r = UnityEngine.Random.Range(0.01f, 0.1f);
 			Vector3 scale = new Vector3(r, r, r);
 			s.transform.localScale += scale;

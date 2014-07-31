@@ -4,7 +4,7 @@ using System;
 
 public class Ship : MonoBehaviour, ITurnable {
 	public GameState GameState;
-	public Star Destination;
+	public StarSystem Destination;
 
 	public float Speed = 1.0f;
 
