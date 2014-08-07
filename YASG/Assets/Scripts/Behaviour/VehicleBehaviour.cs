@@ -12,10 +12,12 @@ public class VehicleBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        Vector2 pos = Vehicle.Coordinates;
+	    transform.localPosition = new Vector3(pos.x, 0, pos.y);
 	}
 	
 	public void Select () {
+        Debug.Log("Behaviour position: " + transform.localPosition + ", model position: " + Vehicle.Coordinates);
 		renderer.material.color = Color.cyan;
 	}
 	
@@ -25,6 +27,6 @@ public class VehicleBehaviour : MonoBehaviour {
 	
 	
 	void OnMouseDown () {
-		GameState.SetVehicle(this);
+		GameState.SelectedVehicle = this;
 	}
 }

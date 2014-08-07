@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum PlanetType {
 	EarthLike, SuperEarth, NeptuneLike, JupiterLike, SuperJupiter
 }
 
 public class Planet : IStellarObject {
-	private Random random;
+	private System.Random random;
 	private IStellarObject location;
 	private HashSet<ILocation> sublocations;
 	private HashSet<ILocation> orbits;
@@ -16,10 +17,12 @@ public class Planet : IStellarObject {
 	private double volume;
 	private double radius;
 	private PlanetType planetType;
+    private Vector2 localCoordinates;
 
-	public Planet(int seed, IStellarObject location) {
-		this.random = new Random(seed);
+	public Planet(int seed, IStellarObject location, Vector2 localCoordinates) {
+		this.random = new System.Random(seed);
 		this.location = location;
+        this.localCoordinates = localCoordinates;
 
 		// Age
 		int parentAgeInDays = Convert.ToInt32(location.Age.TotalDays);
@@ -59,6 +62,18 @@ public class Planet : IStellarObject {
 		// Resources
 		resources = new List<IResource>();
 	}
+
+    public Vector2 LocalCoordinates {
+        get {
+            return localCoordinates;
+        }
+    }
+
+    public Vector2 Coordinates {
+        get {
+            return location.LocalCoordinates + localCoordinates;
+        }
+    }
 
 	public void Turn (TimeSpan turnTime, DateTime targetDate) {
 		age += turnTime;

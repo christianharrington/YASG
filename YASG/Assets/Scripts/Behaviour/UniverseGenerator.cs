@@ -5,18 +5,22 @@ using System;
 public class UniverseGenerator : MonoBehaviour {
 
 	public GameState GameState;
-	public GameObject StarSystem;
+    public GameObject StarSystem;
 
 	// Use this for initialization
 	void Start () {
+        Universe universe = new Universe(3);
+        GameState.Universe = universe;
+
 		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
 		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
 		foreach (Vector2 p in starPositions) {
 			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
 
 			StarBehaviour sb = s.GetComponent<StarBehaviour>();
+            sb.StarSystem = new StarSystem(universe, p);
 			sb.GameState = GameState;
-			GameState.Turnables.Add(sb.Star);
+			GameState.Turnables.Add(sb.StarSystem);
 
 			float r = UnityEngine.Random.Range(0.01f, 0.1f);
 			Vector3 scale = new Vector3(r, r, r);

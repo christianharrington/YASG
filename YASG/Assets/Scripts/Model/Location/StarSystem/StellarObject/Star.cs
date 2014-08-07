@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 public enum StarType {
 	M, K, G, F, A, B, O
@@ -7,9 +8,22 @@ public enum StarType {
 
 public class Star : IStellarObject {
 	TimeSpan age;
-	List<IResource> resources;
-	HashSet<ILocation> orbits;
-	Random rnd;
+	readonly List<IResource> resources;
+	readonly HashSet<ILocation> orbits;
+	readonly System.Random rnd;
+    Vector2 localCoordinates;
+
+    public Vector2 LocalCoordinates {
+        get {
+            return localCoordinates;
+        }
+    }
+
+    public Vector2 Coordinates {
+        get {
+            return Location.LocalCoordinates + localCoordinates;
+        }
+    }
 
 	// IStellarObject
 	public TimeSpan Age { 
@@ -42,8 +56,8 @@ public class Star : IStellarObject {
 		}
 	}
 
-	public Star(int seed, IStellarObject location) {
-		rnd = new Random (seed);
+	public Star(int seed, IStellarObject location, Vector2 localCoordinates) {
+		rnd = new System.Random (seed);
 		Type = RandomType ();
 		Mass = RandomMass (Type);
 		Radius = RandomRadius (Type);
@@ -53,7 +67,8 @@ public class Star : IStellarObject {
 		Location = location;
 		// FIXME: This just adds up to five planets to any star. This should be done better.
 		for (int i = 0; i < rnd.Next(5); i++) {
-			Planet p = new Planet(rnd.Next(), location);
+            Vector2 planetLoc = new Vector2(0, 0); // FIXME: THIS IS WRONG
+			Planet p = new Planet(rnd.Next(), location, planetLoc);
 			orbits.Add(p);
 		}
 	}

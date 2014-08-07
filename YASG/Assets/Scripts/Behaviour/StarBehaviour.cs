@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StarBehaviour : MonoBehaviour {
 	public GameState GameState;
-	public Star Star;
+	public StarSystem StarSystem;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +16,7 @@ public class StarBehaviour : MonoBehaviour {
 	}
 
 	public void Select () {
+        Debug.Log("Behaviour position: " + transform.localPosition + ", model position: " + StarSystem.Coordinates);
 		renderer.material.color = Color.red;
 	}
 
@@ -25,6 +26,6 @@ public class StarBehaviour : MonoBehaviour {
 
 
 	void OnMouseDown () {
-		GameState.SetStar(this);
+		GameState.SelectedStarSystem = this;
 	}
 }

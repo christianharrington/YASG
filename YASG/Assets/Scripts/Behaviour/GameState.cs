@@ -13,6 +13,8 @@ public class GameState : MonoBehaviour
 	private StarBehaviour selectedStarSystem;
 	private VehicleBehaviour selectedVehicle;
 
+    public Universe Universe;
+
 	private DateTime date = new DateTime(2008, 6, 1, 7, 47, 0);
 	private DateTime targetDate;
 	private TimeSpan turnTime;
@@ -46,25 +48,36 @@ public class GameState : MonoBehaviour
 		Debug.Log("Each update will cover a time span of " + turnTime);
 	}
 
-	public void SetStar(StarBehaviour star) {
-		if (selectedStarSystem != null) {
-			selectedStarSystem.DeSelect();
-		}
+	public StarBehaviour SelectedStarSystem {
+        get {
+            return selectedStarSystem;
+        }
+        set {
+            if (selectedStarSystem != null) {
+			    selectedStarSystem.DeSelect();
+		    }
 
-		star.Select();
-	    selectedStarSystem = star;
+		    value.Select();
+	        selectedStarSystem = value;
 
-		if (selectedVehicle != null) {
-			selectedVehicle.Vehicle.Destination = selectedStarSystem.Star.Location;
-		}
+		    if (selectedVehicle != null) {
+			    selectedVehicle.Vehicle.Destination = selectedStarSystem.StarSystem;
+		    }
+        }
+		
 	}
 
-	public void SetVehicle(VehicleBehaviour vehicle) {
-		if (selectedVehicle != null) {
-			selectedVehicle.DeSelect();
-		}
+	public VehicleBehaviour SelectedVehicle {
+        get {
+            return selectedVehicle;
+        }
+        set {
+            if (selectedVehicle != null) {
+                selectedVehicle.DeSelect();
+            }
 
-		vehicle.Select();
-		selectedVehicle = vehicle;
+            value.Select();
+            selectedVehicle = value;
+        }
 	}
 }
