@@ -9,9 +9,8 @@ public class Universe : ILocation {
     readonly int seed;
     readonly System.Random random;
 
-    public Universe(int seed) {
-        this.seed = seed;
-        random = new System.Random(seed);
+    public Universe(System.Random random) {
+        this.random = random;
     }
 
 	public ILocation Location {

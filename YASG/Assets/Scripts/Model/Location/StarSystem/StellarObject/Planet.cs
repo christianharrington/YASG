@@ -18,9 +18,9 @@ public class Planet : IStellarObject {
 	private double radius;
 	private PlanetType planetType;
     private Vector2 localCoordinates;
-
-	public Planet(int seed, IStellarObject location, Vector2 localCoordinates) {
-		this.random = new System.Random(seed);
+	
+	public Planet(System.Random random, Star location, Vector2 localCoordinates) {
+		this.random = random;
 		this.location = location;
         this.localCoordinates = localCoordinates;
 
@@ -33,15 +33,20 @@ public class Planet : IStellarObject {
 			minAgeInYears = 1000;
 		}
 
-		age = TimeSpan.FromDays(parentAgeInDays - random.Next(minAgeInYears, maxAgeInYears) * 365);
+		age = TimeSpan.FromDays(4000000); //parentAgeInDays - random.Next(minAgeInYears, maxAgeInYears) * 365);
 
 		// Type
 		Double rngVal = random.NextDouble();
+		Double pAcc = 0.0;
 		PlanetType pType = PlanetType.EarthLike;
 
-		while (rngVal > 0) {
-			rngVal -= Constants.PlanetTypeLikelyhood[pType];
-			pType++;
+		foreach (PlanetType pt in Constants.PlanetTypeLikelyhood.Keys) {
+			pAcc += Constants.PlanetTypeLikelyhood[pt];
+
+			if (rngVal <= pAcc) {
+				pType = pt;
+				break;
+			}
 		}
 
 		this.planetType = pType;

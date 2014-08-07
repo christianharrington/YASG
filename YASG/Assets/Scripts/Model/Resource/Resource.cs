@@ -3,6 +3,6 @@
 }
 
 public interface IResource {
-	ulong getAmount();
-	Unit getUnit();
+	ulong Amount { get; }
+	Unit Unit { get; }
 }

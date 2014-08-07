@@ -9,7 +9,8 @@ public class UniverseGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Universe universe = new Universe(3);
+		System.Random random = new System.Random(42);
+        Universe universe = new Universe(random);
         GameState.Universe = universe;
 
 		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
@@ -18,7 +19,7 @@ public class UniverseGenerator : MonoBehaviour {
 			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
 
 			StarBehaviour sb = s.GetComponent<StarBehaviour>();
-            sb.StarSystem = new StarSystem(universe, p);
+            sb.StarSystem = new StarSystem(random, universe, p);
 			sb.GameState = GameState;
 			GameState.Turnables.Add(sb.StarSystem);
 

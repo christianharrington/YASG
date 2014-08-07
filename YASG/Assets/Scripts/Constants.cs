@@ -6,7 +6,7 @@ public class Constants {
 	// FIXME: This is not accurate enough as it does not take giants and dwarfs into account.
 	// Units are Solar Masses and Solar Radii
 	// From http://en.wikipedia.org/wiki/Stellar_classification	
-	public static Dictionary<StarType, Double> StarTypeLikelyhood = new Dictionary<StarType, Double>() 
+	public static Dictionary<StarType, double> StarTypeLikelyhood = new Dictionary<StarType, Double>() 
 	{
 		{ StarType.O, 0.0000003 },
 		{ StarType.B, 0.0013 },
@@ -16,7 +16,7 @@ public class Constants {
 		{ StarType.K, 0.121 },
 		{ StarType.M, 0.7645 }
 	};
-
+	
 	public static Dictionary<StarType, StellarObjectData> StarData = new Dictionary<StarType, StellarObjectData> ()
 	{
 		{ StarType.O, new StellarObjectData(6.6, 100, 16, 100) },
@@ -27,9 +27,36 @@ public class Constants {
 		{ StarType.K, new StellarObjectData(0.7, 0.96, 0.45, 0.8) },
 		{ StarType.M, new StellarObjectData(0.15, 0.7, 0.08, 0.45) } 
 	};
+
+	// The Single Star Fraction denotes the fraction of single star systems per class of stars
+	// http://www.cfa.harvard.edu/news/2006-11
+	// https://www.cfa.harvard.edu/~clada/pubs_html/pubs/binaries_final.pdf
+	public static Dictionary<StarType, double> SingleStarFraction = new Dictionary<StarType, double> ()
+	{
+		{ StarType.O, 0.2 },
+		{ StarType.B, 0.2 },
+		{ StarType.A, 0.43 },
+		{ StarType.F, 0.43 },
+		{ StarType.G, 0.43 },
+		{ StarType.K, 0.43 },
+		{ StarType.M, 0.74 }
+	};
+
+	// The probability that a star system has <key> number of stars.
+	// Numbers made up. Difficult to find sources.
+	public static Dictionary<int, double> StarSystemMultiplicityLikelyhood = new Dictionary<int, double> ()
+	{
+		{ 3, 0.25  },
+		{ 4, 0.10  },
+		{ 5, 0.03  },
+		{ 6, 0.01  },
+		{ 7, 0.001 }
+	};
 	#endregion
 
 	#region Planet Data
+	public const int MaxNumberOfPlanetsPerStar = 5;
+
 	// http://www.nasa.gov/content/nasa-kepler-results-usher-in-a-new-era-of-astronomy/
 	public static Dictionary<PlanetType, Double> PlanetTypeLikelyhood = new Dictionary<PlanetType, Double>() {
 		{ PlanetType.EarthLike, 0.190503 },
@@ -51,9 +78,9 @@ public class Constants {
 }
 
 public struct StellarObjectData {
-	public readonly Double MinRadius, MaxRadius, MinMass, MaxMass;
+	public readonly double MinRadius, MaxRadius, MinMass, MaxMass;
 
-	public StellarObjectData(Double minR, Double maxR, Double minM, Double maxM) {
+	public StellarObjectData(double minR, double maxR, double minM, double maxM) {
 		MinRadius = minR;
 		MaxRadius = maxR;
 		MinMass = minM;

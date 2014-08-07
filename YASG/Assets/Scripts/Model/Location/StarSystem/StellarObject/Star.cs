@@ -7,45 +7,94 @@ public enum StarType {
 }
 
 public class Star : IStellarObject {
-	TimeSpan age;
-	readonly List<IResource> resources;
-	readonly HashSet<ILocation> orbits;
-	readonly System.Random rnd;
-    Vector2 localCoordinates;
+	private readonly List<IResource> resources;
+	private readonly HashSet<ILocation> orbits;
+	private readonly HashSet<Planet> planets;
+	private readonly System.Random rnd;
 
-    public Vector2 LocalCoordinates {
-        get {
-            return localCoordinates;
-        }
-    }
+	private readonly StarType type;
+	private TimeSpan age;
+	private readonly double mass;
+	private readonly double radius;
+	private readonly double volume;
+	private readonly ILocation location;
+	private Vector2 localCoordinates;
 
-    public Vector2 Coordinates {
-        get {
-            return Location.LocalCoordinates + localCoordinates;
-        }
-    }
+	public Star(System.Random random, StarSystem system, Vector2 localCoordinates) {
+		location = system;
+
+		rnd = random;
+		type = RandomType ();
+		mass = RandomMass (Type);
+		radius = RandomRadius (Type);
+		volume = Convert.ToInt32((4 / 3) * (Math.PI * Math.Pow (Radius, 3)));
+		resources = new List<IResource> (); // FIXME: Consider star resources.
+		age = TimeSpan.FromDays(700000); //TimeSpan.FromDays (rnd.Next (ExpectedAge (Mass)));
+		this.localCoordinates = localCoordinates;
+
+		planets = new HashSet<Planet>();
+		orbits = new HashSet<ILocation>();
+
+		addPlanets();
+	}
+
+	private void addPlanets() {
+		// FIXME: This just adds up to five planets to any star. This should be done better.
+		int numberOfPlanets = rnd.Next(Constants.MaxNumberOfPlanetsPerStar);
+		for (int i = 0; i < numberOfPlanets; i++) {
+			Planet p = new Planet(rnd, this, new Vector2(0,0)); // FIXME: Rimelige koordinater
+			planets.Add(p);
+			orbits.Add(p);
+		}
+	}
 
 	// IStellarObject
 	public TimeSpan Age { 
-		get {
-			return age;
-		}
+		get { return age; }
 	}
-	public StarType Type { get; set; }
-	public Double Mass { get; set; }
-	public Double Radius { get; set; }
+
+	public StarType Type { 
+		get { return type; } 
+	}
+
+	public double Mass { 
+		get { return mass; }
+	}
+
+	public double Radius { 
+		get { return radius; }
+	}
+
 	public List<IResource> Resources { 
-		get {
-			return resources;
-		}
+		get { return resources; }
 	}
-	public HashSet<ILocation> Sublocations { get; set; }
+
+	public HashSet<Planet> Planets {
+		get { return planets; }
+	}
+
+	public HashSet<ILocation> Sublocations {
+		get { return orbits; }
+	}
+
 	public HashSet<ILocation> Orbits { 
+		get { return orbits; }
+	}
+	public double Volume {
+		get { return volume; }
+	}
+
+	public Vector2 LocalCoordinates {
 		get {
-			return orbits;
+			return localCoordinates;
 		}
 	}
-	public Double Volume { get; set; }
+	
+	public Vector2 Coordinates {
+		get {
+			return Location.LocalCoordinates + localCoordinates;
+		}
+	}
 
 	public void Turn (TimeSpan turnTime, DateTime targetDate)
 	{
@@ -55,30 +104,19 @@ public class Star : IStellarObject {
 			// Star ded... :(
 		}
 	}
-
-	public Star(int seed, IStellarObject location, Vector2 localCoordinates) {
-		rnd = new System.Random (seed);
-		Type = RandomType ();
-		Mass = RandomMass (Type);
-		Radius = RandomRadius (Type);
-		Volume = Convert.ToInt32((4 / 3) * (Math.PI * Math.Pow (Radius, 3)));
-		resources = new List<IResource> (); // FIXME: Consider star resources.
-		age = TimeSpan.FromDays (rnd.Next (ExpectedAge (Mass)));
-		Location = location;
-		// FIXME: This just adds up to five planets to any star. This should be done better.
-		for (int i = 0; i < rnd.Next(5); i++) {
-            Vector2 planetLoc = new Vector2(0, 0); // FIXME: THIS IS WRONG
-			Planet p = new Planet(rnd.Next(), location, planetLoc);
-			orbits.Add(p);
-		}
-	}
-
+	
 	public StarType RandomType() {
-		Double rndVal = rnd.NextDouble ();
-		StarType type = 0;
-		while (rndVal > 0) {
-			rndVal -= Constants.StarTypeLikelyhood[type];
-			type++;
+		Double rngVal = rnd.NextDouble();
+		Double sAcc = 0.0;
+		StarType type = StarType.A;
+		
+		foreach (StarType st in Constants.StarTypeLikelyhood.Keys) {
+			sAcc += Constants.StarTypeLikelyhood[st];
+			
+			if (rngVal <= sAcc) {
+				type = st;
+				break;
+			}
 		}
 		return type;
 	}
@@ -96,12 +134,14 @@ public class Star : IStellarObject {
 	// FIXME: We should find a more accurate method.
 	// http://www.asc-csa.gc.ca/eng/educators/resources/astronomy/module2/calculator.asp
 	// Age in 10 millions of years = 1 / (mass^2.5) 
-	public int ExpectedAge(Double mass) {
+	public int ExpectedAge(double mass) {
 		return Convert.ToInt32(1 / (Math.Pow (mass, 2.5))) * 10000000 * 365;
 	}
 
 	// ILocation
-	public ILocation Location { get; set; }
+	public ILocation Location {
+		get { return location; }
+	}
 
 }
 
