@@ -17,7 +17,7 @@ public class VehicleBehaviour : MonoBehaviour {
 	}
 	
 	public void Select () {
-        Debug.Log("Behaviour position: " + transform.localPosition + ", model position: " + Vehicle.Coordinates);
+        Debug.Log("Behaviour position: " + transform.localPosition + ", model position: " + Vehicle.Coordinates + ". Location: " + Vehicle.Location);
 		renderer.material.color = Color.cyan;
 	}
 	

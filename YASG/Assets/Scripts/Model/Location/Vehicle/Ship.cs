@@ -8,6 +8,8 @@ public class Ship : ITurnable, IVehicle {
     private ILocation destination;
     private Vector2 localCoordinates;
 
+    private readonly Universe universe;
+
 	public readonly float MaxSpeed = 1.0f;
     public readonly float MaxAccel = 0.2f;
     float speed = 0.0f;
@@ -15,6 +17,17 @@ public class Ship : ITurnable, IVehicle {
     public Ship(ILocation location) {
         this.location = location;
         this.localCoordinates = new Vector2(0, 0);
+
+        ILocation parent = location;
+
+        while (universe == null) {
+            if (parent is Universe) {
+                universe = parent as Universe;
+            }
+            else {
+                parent = parent.Location;
+            }
+        }
     }
 
 	public ILocation Destination {
@@ -27,9 +40,41 @@ public class Ship : ITurnable, IVehicle {
         }
     }
 
+    private ILocation findLocation(HashSet<ILocation> candidates, ILocation bestCandidate) {
+        HashSet<ILocation> newCandidates = new HashSet<ILocation>();
+
+        foreach (ILocation c in candidates) {
+            double dist = Vector2.Distance(Coordinates, c.Coordinates);
+ 
+            if (dist <= c.AreaOfInfluence) {
+
+                newCandidates.UnionWith(c.Sublocations);
+
+                if (bestCandidate != null && dist < Vector2.Distance(Coordinates, bestCandidate.Coordinates)) {
+                    bestCandidate = c;
+                }
+                else {
+                    bestCandidate = c;
+                }
+            }
+        }
+
+        if (newCandidates.Count == 0) {
+            if (bestCandidate != null) {
+                return bestCandidate;
+            }
+            else {
+                return universe;
+            }
+        }
+        else {
+            return findLocation(newCandidates, bestCandidate);
+        }
+    }
+
 	public ILocation Location {
 		get {
-			return location;
+			return findLocation(universe.Sublocations, null);
 		}
 	}
 
@@ -52,6 +97,7 @@ public class Ship : ITurnable, IVehicle {
     }
 
 	public void Turn (TimeSpan turnTime, DateTime targetDate) {
+        Debug.Log("Location of Ship: " + Location);
 		float years = (float) (turnTime.TotalDays / 365);
 
         if (Destination != null && Coordinates != Destination.Coordinates) {
@@ -65,4 +111,10 @@ public class Ship : ITurnable, IVehicle {
 //			iTween.MoveTo (gameObject, movement, 1.0f);
 //		}
 	}
+
+    public double AreaOfInfluence {
+        get {
+            return 0.1;
+        }
+    }
 }

@@ -10,8 +10,7 @@ public class UniverseGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		System.Random random = new System.Random(42);
-        Universe universe = new Universe(random);
-        GameState.Universe = universe;
+        GameState.Universe = new Universe(random);
 
 		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
 		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
@@ -19,8 +18,10 @@ public class UniverseGenerator : MonoBehaviour {
 			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
 
 			StarBehaviour sb = s.GetComponent<StarBehaviour>();
-            sb.StarSystem = new StarSystem(random, universe, p);
-			sb.GameState = GameState;
+            sb.StarSystem = new StarSystem(random, GameState.Universe, p);
+           	sb.GameState = GameState;
+
+            GameState.Universe.Sublocations.Add(sb.StarSystem);
 			GameState.Turnables.Add(sb.StarSystem);
 
 			float r = UnityEngine.Random.Range(0.01f, 0.1f);

@@ -102,4 +102,16 @@ public class StarSystem : ILocation, ITurnable {
             return localCoordinates;
         }
     }
+
+    public double AreaOfInfluence {
+        get {
+            double totalMass =  primaryStar.Mass;
+
+            foreach (Star s in companionStars) {
+                totalMass += s.Mass;
+            }
+
+            return totalMass;
+        }
+    }
 }

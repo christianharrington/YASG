@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 
 public class Universe : ILocation {
-	readonly private HashSet<ILocation> sublocations = new HashSet<ILocation>();
-    readonly private Vector2 coordinates = new Vector2(0, 0);
+	private readonly HashSet<ILocation> sublocations = new HashSet<ILocation>();
+    private readonly Vector2 coordinates = new Vector2(0, 0);
 
-    readonly int seed;
-    readonly System.Random random;
+    private readonly int seed;
+    private readonly System.Random random;
 
     public Universe(System.Random random) {
         this.random = random;
@@ -34,6 +34,12 @@ public class Universe : ILocation {
     public Vector2 LocalCoordinates {
         get {
             return coordinates;
+        }
+    }
+
+    public double AreaOfInfluence {
+        get {
+            return float.PositiveInfinity;
         }
     }
 }

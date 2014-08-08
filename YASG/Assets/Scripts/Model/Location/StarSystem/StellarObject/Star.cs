@@ -121,21 +121,21 @@ public class Star : IStellarObject {
 		return type;
 	}
 
-	public int RandomMass(StarType type) {
+	public double RandomMass(StarType type) {
 		StellarObjectData data = Constants.StarData [type];
-		return Convert.ToInt32(rnd.NextDouble() * (data.MaxMass - data.MinMass) + data.MinMass);
+		return rnd.NextDouble() * (data.MaxMass - data.MinMass) + data.MinMass;
 	}
 
-	public int RandomRadius(StarType type) {
+	public double RandomRadius(StarType type) {
 		StellarObjectData data = Constants.StarData [type];
-		return Convert.ToInt32(rnd.NextDouble() * (data.MaxRadius - data.MinRadius) + data.MinRadius);
+		return rnd.NextDouble() * (data.MaxRadius - data.MinRadius) + data.MinRadius;
 	}
 
 	// FIXME: We should find a more accurate method.
 	// http://www.asc-csa.gc.ca/eng/educators/resources/astronomy/module2/calculator.asp
 	// Age in 10 millions of years = 1 / (mass^2.5) 
-	public int ExpectedAge(double mass) {
-		return Convert.ToInt32(1 / (Math.Pow (mass, 2.5))) * 10000000 * 365;
+	public double ExpectedAge(double mass) {
+		return 1 / (Math.Pow (mass, 2.5)) * 10000000 * 365;
 	}
 
 	// ILocation
@@ -143,5 +143,10 @@ public class Star : IStellarObject {
 		get { return location; }
 	}
 
+    public double AreaOfInfluence {
+        get {
+            return mass;
+        }
+    }
 }
 

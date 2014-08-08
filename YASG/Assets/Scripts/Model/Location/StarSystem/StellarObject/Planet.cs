@@ -155,4 +155,10 @@ public class Planet : IStellarObject {
 			throw new System.NotImplementedException ();
 		}
 	}
+
+    public double AreaOfInfluence {
+        get {
+            return mass;
+        }
+    }
 }
