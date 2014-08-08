@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 
 public class Universe : ILocation {
-	private HashSet<ILocation> sublocations = new HashSet<ILocation>();
-    private Vector2 coordinates = new Vector2(0, 0);
+	readonly private HashSet<ILocation> sublocations = new HashSet<ILocation>();
+    readonly private Vector2 coordinates = new Vector2(0, 0);
 
     readonly int seed;
     readonly System.Random random;

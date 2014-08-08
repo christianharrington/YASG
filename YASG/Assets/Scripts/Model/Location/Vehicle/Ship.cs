@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ship : ITurnable, IVehicle {
 	private ILocation location;
-	private HashSet<ILocation> sublocations;
+	private readonly HashSet<ILocation> sublocations = new HashSet<ILocation>();
     private ILocation destination;
     private Vector2 localCoordinates;
 
