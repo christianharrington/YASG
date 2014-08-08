@@ -42,4 +42,10 @@ public class Universe : ILocation {
             return float.PositiveInfinity;
         }
     }
+
+    public string Name {
+        get {
+            return "The Universe";
+        }
+    }
 }

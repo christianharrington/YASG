@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class UniverseGenerator : MonoBehaviour {
 
@@ -8,27 +9,46 @@ public class UniverseGenerator : MonoBehaviour {
     public GameObject StarSystem;
 
 	// Use this for initialization
-	void Start () {
-		System.Random random = new System.Random(42);
-        GameState.Universe = new Universe(random);
+    void Start() {
+        GameState.Random = new System.Random(42);
+        GameState.Universe = new Universe(GameState.Random);
 
-		//Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
-		IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle (new Vector2 (-100, -100), new Vector2 (100, 100), 4f);
-		foreach (Vector2 p in starPositions) {
-			GameObject s = Instantiate (StarSystem, new Vector3 (p.x, 0, p.y), Quaternion.identity) as GameObject;
+        //Instantiate (Star, new Vector3 (x, 0, z), Quaternion.identity);
+        IList<Vector2> starPositions = UniformPoissonDiskSampler.SampleRectangle(new Vector2(-100, -100), new Vector2(100, 100), 4f);
+        foreach (Vector2 p in starPositions) {
+            GameObject s = Instantiate(StarSystem, new Vector3(p.x, 0, p.y), Quaternion.identity) as GameObject;
 
-			StarBehaviour sb = s.GetComponent<StarBehaviour>();
-            sb.StarSystem = new StarSystem(random, GameState.Universe, p);
-           	sb.GameState = GameState;
+            StarBehaviour sb = s.GetComponent<StarBehaviour>();
+            sb.StarSystem = new StarSystem(GameState.Random, GameState.Universe, p);
+            sb.GameState = GameState;
 
             GameState.Universe.Sublocations.Add(sb.StarSystem);
-			GameState.Turnables.Add(sb.StarSystem);
+            GameState.Turnables.Add(sb.StarSystem);
 
-			float r = UnityEngine.Random.Range(0.01f, 0.1f);
-			Vector3 scale = new Vector3(r, r, r);
-			s.transform.localScale += scale;
-		}
-	}
+            float r = UnityEngine.Random.Range(0.01f, 0.1f);
+            Vector3 scale = new Vector3(r, r, r);
+            s.transform.localScale += scale;
+        }
+
+        var allStars = new List<Star>();
+        foreach (var ss in GameState.Universe.Sublocations.Select(ss => ss.Sublocations)) {
+            foreach (var o in ss) {
+                if (o is Star) {
+                    allStars.Add(o as Star);
+                }
+            }
+        }
+
+        var allPlanets = new List<Planet>(); 
+        foreach (var ps in allStars.Where(s => s.Planets.Count > 0).Select(s => s.Planets)) {
+            foreach (var p in ps) {
+                allPlanets.Add(p);
+            }
+        }
+        // FIXME: Player should start on a planet, but we don't support that yet
+        //GameState.Player.Location = allPlanets[GameState.Random.Next(allPlanets.Count - 1)];
+        GameState.Player.Location = GameState.Universe.Sublocations.ElementAt(GameState.Random.Next(GameState.Universe.Sublocations.Count - 1));
+    }
 	
 	public static class UniformPoissonDiskSampler
 	{

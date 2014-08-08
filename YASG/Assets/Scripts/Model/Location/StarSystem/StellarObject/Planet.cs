@@ -18,11 +18,13 @@ public class Planet : IStellarObject {
 	private double radius;
 	private PlanetType planetType;
     private Vector2 localCoordinates;
+    private readonly string name;
 	
-	public Planet(System.Random random, Star location, Vector2 localCoordinates) {
+	public Planet(System.Random random, Star location, Vector2 localCoordinates, string name) {
 		this.random = random;
 		this.location = location;
         this.localCoordinates = localCoordinates;
+        this.name = name;
 
 		// Age
 		int parentAgeInDays = Convert.ToInt32(location.Age.TotalDays);
@@ -155,6 +157,12 @@ public class Planet : IStellarObject {
 			throw new System.NotImplementedException ();
 		}
 	}
+
+    public string Name {
+        get {
+            return name;
+        }
+    }
 
     public double AreaOfInfluence {
         get {

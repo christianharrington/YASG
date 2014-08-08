@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 public class Ship : ITurnable, IVehicle {
 	private ILocation location;
 	private readonly HashSet<ILocation> sublocations = new HashSet<ILocation>();
     private ILocation destination;
     private Vector2 localCoordinates;
+    private readonly string name;
+    private readonly System.Random random;
 
     private readonly Universe universe;
 
@@ -14,9 +17,12 @@ public class Ship : ITurnable, IVehicle {
     public readonly float MaxAccel = 0.2f;
     float speed = 0.0f;
 
-    public Ship(ILocation location) {
+    public Ship(System.Random random, ILocation location, Vector2 localCoordinates) {
+        this.random = random;
         this.location = location;
-        this.localCoordinates = new Vector2(0, 0);
+        this.localCoordinates = localCoordinates;
+
+        this.name = shipNameGenerator();
 
         ILocation parent = location;
 
@@ -28,6 +34,16 @@ public class Ship : ITurnable, IVehicle {
                 parent = parent.Location;
             }
         }
+    }
+
+    private string shipNameGenerator() {
+        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var result = new string(
+            Enumerable.Repeat(chars, 2)
+                      .Select(s => s[random.Next(s.Length)])
+                      .ToArray());
+
+        return "USS-" + result + random.Next(100, 999);
     }
 
 	public ILocation Destination {
@@ -93,6 +109,12 @@ public class Ship : ITurnable, IVehicle {
     public Vector2 Coordinates {
         get {
             return location.LocalCoordinates + localCoordinates;
+        }
+    }
+
+    public string Name {
+        get {
+            return name;
         }
     }
 

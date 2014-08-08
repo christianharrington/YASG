@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
 	public int Credits;
 
-	public StarSystem Location;
+	public ILocation Location;
 	
 
 	// Use this for initialization

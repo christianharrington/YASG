@@ -6,19 +6,20 @@ using System.Linq;
 public class StarSystem : ILocation, ITurnable {
 	private readonly ILocation location;
 	private readonly System.Random rnd;
-	private Star primaryStar;
-	private readonly IList<Star> companionStars;
+    private readonly SortedList<double, Star> stars = new SortedList<double, Star>();
+    private readonly HashSet<ILocation> subLocations = new HashSet<ILocation>();
 	private Vector2 localCoordinates;
-
+    private readonly string name;
 
 	public StarSystem(System.Random random, Universe universe, Vector2 localCoordinates) {
 		location = universe;
 		this.localCoordinates = localCoordinates;
-
-		rnd = random;
+        rnd = random;
+        name = starSystemNameGenerator();
 
 		// Create initial primary star
-		primaryStar = new Star(random, this, localCoordinates);
+		Star primaryStar = new Star(random, this, localCoordinates);
+        stars.Add(primaryStar.Mass, primaryStar);
 		// Based on initial primary star, get probablity that this is a single star system 
 		double singleStarFraction = Constants.SingleStarFraction[primaryStar.Type];
 
@@ -26,17 +27,34 @@ public class StarSystem : ILocation, ITurnable {
 		bool isSingleStarSystem = rnd.NextDouble() < singleStarFraction;
 
 		// No companion stars in single star systems
-		companionStars = new List<Star>();
-
 		if (!isSingleStarSystem) {
 			createMultipleStarSystem();
 		}
+
+        string[] suffixes = new string[] {"Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta"};
+
+        int i = 0;
+        foreach (Star star in Stars) {
+            star.Name = name + " " + suffixes[i];
+            i++;
+            subLocations.Add(star);
+        }
 	}
+
+    private string starSystemNameGenerator() {
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        string result = new string(
+               Enumerable.Repeat(chars, 8)
+                         .Select(s => s[rnd.Next(s.Length)])
+                         .ToArray());
+
+        return result;
+    }
 
 	private void createMultipleStarSystem() {
 		// At least one companion star must exist in a multiple star system
 		Star secondStar = new Star(rnd, this, localCoordinates);
-		companionStars.Add (secondStar);
+		stars.Add(secondStar.Mass, secondStar);
 		
 		// Calculate multiplicity
 		double probabilityOfHigherMultiplicity = rnd.NextDouble();
@@ -50,28 +68,17 @@ public class StarSystem : ILocation, ITurnable {
 		// Create new stars according to multiplicity
 		for (int i = multiplicity-2; i > 0; i--) {
 			Star s = new Star(rnd, this, localCoordinates);
-			companionStars.Add (s);
+			stars.Add(s.Mass, s);
 		}
-		
-		// Set primary star to be the most massive star in the system
-		Star mostMassiveStar = primaryStar;
-		foreach (Star s in companionStars) {
-			if (s.Mass > mostMassiveStar.Mass) {
-				mostMassiveStar = s;
-			}
-		}
-		primaryStar = mostMassiveStar;
 	}
 
 	public Star PrimaryStar {
-		get { return primaryStar; }
+		get { return stars[0]; }
 	}
 
 	public IList<Star> Stars {
 		get {
-			IList<Star> stars = new List<Star> { primaryStar };
-			foreach (Star s in companionStars) { stars.Add (s); }
-			return stars;
+			return stars.Values;
 		}
 	}
 	
@@ -84,10 +91,8 @@ public class StarSystem : ILocation, ITurnable {
 	}
 
 	public HashSet<ILocation> Sublocations {
-		get { 
-			HashSet<ILocation> locations = new HashSet<ILocation> { primaryStar };
-			foreach (Star s in companionStars) { locations.Add (s); }
-			return locations;
+		get {
+            return subLocations;
 		}
 	}
 
@@ -103,15 +108,15 @@ public class StarSystem : ILocation, ITurnable {
         }
     }
 
+    public string Name {
+        get {
+            return name;
+        }
+    }
+
     public double AreaOfInfluence {
         get {
-            double totalMass =  primaryStar.Mass;
-
-            foreach (Star s in companionStars) {
-                totalMass += s.Mass;
-            }
-
-            return totalMass;
+            return stars.Keys.Aggregate((a, b) => a + b);
         }
     }
 }

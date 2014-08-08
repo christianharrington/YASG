@@ -28,15 +28,7 @@ public class GUIController : MonoBehaviour {
 			VehicleBehaviour ship = newShip.GetComponent<VehicleBehaviour>();
 			ship.GameState = GameState;
 
-            ILocation startingLoc;
-            if (GameState.SelectedStarSystem.StarSystem != null)  {
-                startingLoc = GameState.SelectedStarSystem.StarSystem;
-            }
-            else {
-                startingLoc = GameState.Universe;
-            }
-
-            ship.Vehicle = new Ship(startingLoc);
+            ship.Vehicle = new Ship(GameState.Random, GameState.Player.Location, new Vector2(0,0));
 
 			GameState.Turnables.Add(ship.Vehicle);
 			GameState.Player.Vehicle.Add(ship.Vehicle);

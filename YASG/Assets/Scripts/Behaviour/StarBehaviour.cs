@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class StarBehaviour : MonoBehaviour {
 	public GameState GameState;
@@ -16,7 +17,8 @@ public class StarBehaviour : MonoBehaviour {
 	}
 
 	public void Select () {
-        Debug.Log("Behaviour position: " + transform.localPosition + ", model position: " + StarSystem.Coordinates);
+        string starNames = StarSystem.Stars.Select(s => s.Name).Aggregate((a, b) => a + ", " + b);
+        Debug.Log("Star system: " + StarSystem.Name + " Behaviour position: " + transform.localPosition + ", model position: " + StarSystem.Coordinates + ". Stars (" + StarSystem.Stars.Count + "): " + starNames);
 		renderer.material.color = Color.red;
 	}
 

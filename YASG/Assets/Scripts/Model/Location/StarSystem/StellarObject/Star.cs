@@ -42,7 +42,7 @@ public class Star : IStellarObject {
 		// FIXME: This just adds up to five planets to any star. This should be done better.
 		int numberOfPlanets = rnd.Next(Constants.MaxNumberOfPlanetsPerStar);
 		for (int i = 0; i < numberOfPlanets; i++) {
-			Planet p = new Planet(rnd, this, new Vector2(0,0)); // FIXME: Rimelige koordinater
+			Planet p = new Planet(rnd, this, new Vector2(0,0), Name + " " + i); // FIXME: Rimelige koordinater
 			planets.Add(p);
 			orbits.Add(p);
 		}
@@ -95,6 +95,8 @@ public class Star : IStellarObject {
 			return Location.LocalCoordinates + localCoordinates;
 		}
 	}
+
+    public string Name { get; set; }
 
 	public void Turn (TimeSpan turnTime, DateTime targetDate)
 	{

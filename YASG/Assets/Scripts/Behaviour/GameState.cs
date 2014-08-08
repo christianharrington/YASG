@@ -14,6 +14,7 @@ public class GameState : MonoBehaviour
 	private VehicleBehaviour selectedVehicle;
 
     public Universe Universe;
+    public System.Random Random;
 
 	private DateTime date = new DateTime(2008, 6, 1, 7, 47, 0);
 	private DateTime targetDate;

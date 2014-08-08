@@ -7,4 +7,5 @@ public interface ILocation {
     double AreaOfInfluence { get; }
     Vector2 LocalCoordinates { get; }
     Vector2 Coordinates { get; }
+    string Name { get; }
 }
