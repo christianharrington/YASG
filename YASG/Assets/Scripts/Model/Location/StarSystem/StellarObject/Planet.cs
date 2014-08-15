@@ -11,7 +11,7 @@ public class Planet : IStellarObject {
 	private IStellarObject location;
 	private HashSet<ILocation> sublocations;
 	private HashSet<ILocation> orbits;
-	private TimeSpan age;
+	private double age;
 	private List<IResource> resources;
 	private double mass;
 	private double volume;
@@ -27,15 +27,15 @@ public class Planet : IStellarObject {
         this.name = name;
 
 		// Age
-		int parentAgeInDays = Convert.ToInt32(location.Age.TotalDays);
-		int minAgeInYears = 1000000000;
-		int maxAgeInYears = (parentAgeInDays - 500000);
+		double parentAgeInDays = location.Age;
+		double minAgeInYears = 1000000000d;
+		double maxAgeInYears = (parentAgeInDays - 500000);
 
 		if(random.Next(0, 1000) == 0) {
 			minAgeInYears = 1000;
 		}
 
-		age = TimeSpan.FromDays(4000000); //parentAgeInDays - random.Next(minAgeInYears, maxAgeInYears) * 365);
+		age = parentAgeInDays - random.NextDouble() * (maxAgeInYears - minAgeInYears) + minAgeInYears;
 
 		// Type
 		Double rngVal = random.NextDouble();
@@ -82,11 +82,11 @@ public class Planet : IStellarObject {
         }
     }
 
-	public void Turn (TimeSpan turnTime, DateTime targetDate) {
+	public void Turn (double turnTime, double targetDate) {
 		age += turnTime;
 	}
 
-	public TimeSpan Age {
+	public double Age {
 		get {
 			throw new System.NotImplementedException ();
 		}

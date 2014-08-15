@@ -82,7 +82,7 @@ public class StarSystem : ILocation, ITurnable {
 		}
 	}
 	
-	public void Turn (System.TimeSpan turnTime, System.DateTime targetDate) {
+	public void Turn (double turnTime, double targetDate) {
 		return;
 	}
 

@@ -118,12 +118,11 @@ public class Ship : ITurnable, IVehicle {
         }
     }
 
-	public void Turn (TimeSpan turnTime, DateTime targetDate) {
+	public void Turn (double turnTime, double targetDate) {
         Debug.Log("Location of Ship: " + Location);
-		float years = (float) (turnTime.TotalDays / 365);
 
         if (Destination != null && Coordinates != Destination.Coordinates) {
-            Vector2 movement = Vector2.MoveTowards(Coordinates, Destination.Coordinates, MaxSpeed * years); // FIXME: This is wrong
+            Vector2 movement = Vector2.MoveTowards(Coordinates, Destination.Coordinates, MaxSpeed * Convert.ToSingle(turnTime)); // FIXME: This is wrong
             Debug.Log(movement);
             localCoordinates = movement - location.LocalCoordinates;
         }

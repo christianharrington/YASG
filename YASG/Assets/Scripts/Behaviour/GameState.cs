@@ -16,18 +16,18 @@ public class GameState : MonoBehaviour
     public Universe Universe;
     public System.Random Random;
 
-	private DateTime date = new DateTime(2008, 6, 1, 7, 47, 0);
-	private DateTime targetDate;
-	private TimeSpan turnTime;
+    private double date = 5000000000d;
+    private double targetDate = 0d;
+	private double turnTime = 60; // How many update()s a turn should span over
 
-	public DateTime GetDate() {
+	public double GetDate() {
 		return date;
 	}
 
 	// Use this for initialization
 	void Start ()
 	{
-		targetDate = date;
+        targetDate = date;
 	}
 	
 	// Update is called once per frame
@@ -42,11 +42,11 @@ public class GameState : MonoBehaviour
 		} 
 	}
 
-	public void Turn(TimeSpan turnLength) {
+	public void Turn(double turnLength) {
 		targetDate = date + turnLength;
 		Debug.Log("Turn will end in " + targetDate);
-		turnTime = TimeSpan.FromMinutes(turnLength.TotalMinutes / TurnTime);
-		Debug.Log("Each update will cover a time span of " + turnTime);
+		turnTime = turnLength / TurnTime;
+		Debug.Log("Each update will cover a time span of " + turnTime + " years");
 	}
 
 	public StarBehaviour SelectedStarSystem {

@@ -13,7 +13,7 @@ public class Star : IStellarObject {
 	private readonly System.Random rnd;
 
 	private readonly StarType type;
-	private TimeSpan age;
+	private double age;
 	private readonly double mass;
 	private readonly double radius;
 	private readonly double volume;
@@ -29,7 +29,8 @@ public class Star : IStellarObject {
 		radius = RandomRadius (Type);
 		volume = Convert.ToInt32((4 / 3) * (Math.PI * Math.Pow (Radius, 3)));
 		resources = new List<IResource> (); // FIXME: Consider star resources.
-		age = TimeSpan.FromDays(700000); //TimeSpan.FromDays (rnd.Next (ExpectedAge (Mass)));
+        const double minStarAge = 10000d;
+        age = rnd.NextDouble() * (ExpectedAge(Mass) - minStarAge) + minStarAge;
 		this.localCoordinates = localCoordinates;
 
 		planets = new HashSet<Planet>();
@@ -49,7 +50,7 @@ public class Star : IStellarObject {
 	}
 
 	// IStellarObject
-	public TimeSpan Age { 
+	public double Age { 
 		get { return age; }
 	}
 
@@ -98,11 +99,11 @@ public class Star : IStellarObject {
 
     public string Name { get; set; }
 
-	public void Turn (TimeSpan turnTime, DateTime targetDate)
+	public void Turn (double turnTime, double targetDate)
 	{
 		age += turnTime;
 		// Log(x) - 0.1 + Random between 0 and 0.1 > 0
-		if (((Math.Log ((age.TotalDays / ExpectedAge (Mass))) - 0.1) * 10) + rnd.Next(10) > 0) {
+		if (((Math.Log ((age / ExpectedAge (Mass))) - 0.1) * 10) + rnd.Next(10) > 0) {
 			// Star ded... :(
 		}
 	}
@@ -137,7 +138,7 @@ public class Star : IStellarObject {
 	// http://www.asc-csa.gc.ca/eng/educators/resources/astronomy/module2/calculator.asp
 	// Age in 10 millions of years = 1 / (mass^2.5) 
 	public double ExpectedAge(double mass) {
-		return 1 / (Math.Pow (mass, 2.5)) * 10000000 * 365;
+		return 1 / (Math.Pow (mass, 2.5)) * 10000000;
 	}
 
 	// ILocation
