@@ -13,6 +13,8 @@ public class GameState : MonoBehaviour
 	private StarBehaviour selectedStarSystem;
 	private VehicleBehaviour selectedVehicle;
 
+    public Camera Camera; 
+
     public Universe Universe;
     public System.Random Random;
 
@@ -29,10 +31,18 @@ public class GameState : MonoBehaviour
 	{
         targetDate = date;
 	}
+
+    private bool initialCameraMove = false;
 	
 	// Update is called once per frame
 	void Update ()
 	{
+        if (!initialCameraMove && Player.Location != null) {
+            Debug.Log("Moving camera to players position: " + Player.Location.Coordinates);
+            Camera.transform.position = new Vector3(Player.Location.Coordinates.x, 10, Player.Location.Coordinates.y);
+            initialCameraMove = true;
+        }
+
 		if (date < targetDate) {
 			date = date + turnTime;
 
