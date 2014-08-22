@@ -28,7 +28,7 @@ public class StarSystem : ILocation, ITurnable {
 
 		// No companion stars in single star systems
 		if (!isSingleStarSystem) {
-			createMultipleStarSystem();
+			createMultipleStarSystem(ref primaryStar);
 		}
 
         string[] suffixes = new string[] {"Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta"};
@@ -40,7 +40,7 @@ public class StarSystem : ILocation, ITurnable {
             subLocations.Add(star);
         }
 	}
-
+	
     private string starSystemNameGenerator() {
         string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         string result = new string(
@@ -51,7 +51,7 @@ public class StarSystem : ILocation, ITurnable {
         return result;
     }
 
-	private void createMultipleStarSystem() {
+	private void createMultipleStarSystem(ref Star primary) {
 		// At least one companion star must exist in a multiple star system
 		Star secondStar = new Star(rnd, this, localCoordinates);
 		stars.Add(secondStar.Mass, secondStar);
